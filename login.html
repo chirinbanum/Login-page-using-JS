@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Validation</title>
+<style>
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .bg-img {
+    background-image: url("https://img.freepik.com/premium-vector/network-connection-background-abstract-style_23-2148875738.jpg");
+    min-height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+  }
+
+  fieldset {
+    border: none;
+  }
+
+  legend {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  input[type="checkbox"], input[type="radio"] {
+    width: auto;
+  }
+
+  .error {
+    color: red;
+    font-size: 0.9em;
+  }
+
+  .success {
+    color: green;
+    font-size: 1em;
+    margin-top: 10px;
+  }
+
+  .submit-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .submit-btn:hover {
+    background-color: #45a049;
+  }
+</style>
+</head>
+<body>
+<div class="bg-img">
+  <div class="container">
+    <form id="myForm" onsubmit="return validateAndRedirect()">
+      <fieldset>
+        <legend>Form Validation</legend>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name">
+        <span id="nameError" class="error"></span>
+
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" name="phone" placeholder="Enter your phone number">
+        <span id="phoneError" class="error"></span>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" placeholder="Enter your email">
+        <span id="emailError" class="error"></span>
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob">
+        <span id="dobError" class="error"></span>
+
+        <label for="dropdown">Languages:</label>
+        <select id="dropdown" name="dropdown">
+          <option value="">Select One</option>
+          <option value="option1">Tamil</option>
+          <option value="option2">English</option>
+          <option value="option3">Hindi</option>
+        </select>
+        <span id="dropdownError" class="error"></span>
+
+        <label>Gender:</label>
+        <input type="radio" id="male" name="gender" value="male"> Male
+        <input type="radio" id="female" name="gender" value="female"> Female
+        <span id="genderError" class="error"></span>
+
+        <label>Skills:</label>
+        <label for="c">C</label>
+        <input type="checkbox" value="c" name="C">
+        <label for="c++">C++</label>
+        <input type="checkbox" value="c++" name="ca">
+        <label for="java">Java</label>
+        <input type="checkbox" value="java" name="ja">
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" placeholder="Enter your address">
+        <span id="addressError" class="error"></span>
+
+        <input type="checkbox" id="agree" name="agree">
+        <label for="agree">I agree to the terms and conditions</label>
+        <span id="agreeError" class="error"></span>
+
+        <input type="submit" value="Submit" class="submit-btn">
+        <span id="successMessage" class="success"></span>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<script>
+function validateAndRedirect() {
+    var isValid = validateForm(); 
+    
+    if (isValid) {
+        document.getElementById("successMessage").innerHTML = "Success!";
+        window.location.href = "https://kongu.ac.in/"; // Redirect to another website
+    }
+    
+    return false; 
+}
+
+function validateForm() {
+  var name = document.getElementById("name").value;
+  var phone = document.getElementById("phone").value;
+  var email = document.getElementById("email").value;
+  var dropdown = document.getElementById("dropdown").value;
+  var gender = document.querySelector('input[name="gender"]:checked');
+  var dob = document.getElementById("dob").value;
+  var agree = document.getElementById("agree").checked;
+
+  var nameError = document.getElementById("nameError");
+  var phoneError = document.getElementById("phoneError");
+  var emailError = document.getElementById("emailError");
+  var dropdownError = document.getElementById("dropdownError");
+  var genderError = document.getElementById("genderError");
+  var dobError = document.getElementById("dobError");
+  var agreeError = document.getElementById("agreeError");
+
+  nameError.innerHTML = "";
+  phoneError.innerHTML = "";
+  emailError.innerHTML = "";
+  dropdownError.innerHTML = "";
+  genderError.innerHTML = "";
+  agreeError.innerHTML = "";
+  dobError.innerHTML = "";
+
+  var isValid = true;
+
+  if (name === "") {
+    nameError.innerHTML = "Name is required";
+    isValid = false;
+  } else if (!/^[A-Za-z]+$/.test(name)) {
+    nameError.innerHTML = "Name should contain only alphabetic characters";
+    isValid = false;
+  }
+
+  if (phone === "") {
+    phoneError.innerHTML = "Phone number is required";
+    isValid = false;
+  } else if (!/^\d{10}$/.test(phone)) {
+    phoneError.innerHTML = "Invalid phone number";
+    isValid = false;
+  }
+
+  if (email === "") {
+    emailError.innerHTML = "Email is required";
+    isValid = false;
+  } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+    emailError.innerHTML = "Invalid email address";
+    isValid = false;
+  }
+
+  if (dropdown === "") {
+    dropdownError.innerHTML = "Please select an option";
+    isValid = false;
+  }
+
+  if (!gender) {
+    genderError.innerHTML = "Gender is required";
+    isValid = false;
+  }
+
+  if (dob === "") {
+    dobError.innerHTML = "Date of Birth is required";
+    isValid = false;
+  } else {
+    var today = new Date();
+    var selectedDate = new Date(dob);
+
+    if (selectedDate >= today) {
+      dobError.innerHTML = "Date of Birth must be before today";
+      isValid = false;
+    }
+  }
+
+  if (!agree) {
+    agreeError.innerHTML = "You must agree to the terms and conditions";
+    isValid = false;
+  }
+
+  return isValid;
+}
+</script>
+</body>
+</html>
